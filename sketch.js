@@ -1,7 +1,7 @@
-var path,boy,cash,diamonds,jwellery,sword,end,nail;
-var pathImg,boyImg,cashImg,diamondsImg,jwelleryImg,swordImg,endImg,nailImg;
+var path,boy,cash,diamonds,jwellery,sword,end;
+var pathImg,boyImg,cashImg,diamondsImg,jwelleryImg,swordImg,endImg;
 var treasureCollection = 0;
-var cashG,diamondsG,jwelleryG,swordGroup,nailG;
+var cashG,diamondsG,jwelleryG,swordGroup;
 
 var PLAY = 1;
 var END = 0;
@@ -16,7 +16,6 @@ function preload(){
   jwelleryImg = loadImage("jwell.png");
   swordImg = loadImage("sword.png");
   endImg =loadAnimation("gameOver.png");
-  nailImg = loadImage("obstacle3.png");
 }
 
 function setup(){
@@ -43,7 +42,7 @@ cashG=new Group();
 diamondsG=new Group();
 jwelleryG=new Group();
 swordGroup=new Group();
-nailG = new Group();
+
 }
 
 function draw() {
@@ -64,7 +63,6 @@ function draw() {
     createDiamonds();
     createJwellery();
     createSword();
-    createNail();
     end.visible = false;
   }
   else if(gameState === END){
@@ -76,8 +74,6 @@ function draw() {
     diamondsG.setVelocityYEach(0);
     swordGroup.destroyEach();
     swordGroup.setVelocityYEach(0);
-    nailG.destroyEach();
-    nailG.setVelocityYEach(0);
     end.visible = true;
     boy.visible = false;
   }
@@ -94,14 +90,12 @@ function draw() {
       jwelleryG.destroyEach();
       treasureTroupe = treasureTroupe + 150;
       
-    }else if(swordGroup.isTouching(boy)) {
+    }else{
+      if(swordGroup.isTouching(boy)) {
         swordGroup.destroyEach();
         gameState = END;
-    } else if(nailG.isTouching(boy)) {
-        nailG.destroyEach();
-        gameState = END;
     }
-  
+  }
 
   drawSprites();
   textSize(20);
@@ -151,18 +145,5 @@ function createSword(){
   sword.velocityY = 3;
   sword.lifetime = 150;
   swordGroup.add(sword);
-  
-}
-}
-
-function createNail(){
-  if (World.frameCount % 150 == 0) {
-  var nail = createSprite(Math.round(random(50, 350),40, 10, 10));
-  nail.addImage(nailImg);
-  nail.scale=0.1;
-  nail.velocityY = 3;
-  nail.lifetime = 150;
-  nailG.add(nail);
-  
-}
+  }
 }
